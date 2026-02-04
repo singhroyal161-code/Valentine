@@ -212,14 +212,15 @@
 
 <body>
 
-  <!-- Background Music -->
+  <!-- Background Music – YouTube embed (muted autoplay + loop) -->
   <iframe
     id="music"
     width="0"
     height="0"
-    src="https://www.youtube.com/embed/450p7goxZqg?autoplay=1&loop=1&playlist=450p7goxZqg&mute=1"
+    src="https://www.youtube.com/embed/450p7goxZqg?autoplay=1&mute=1&loop=1&playlist=450p7goxZqg"
     frameborder="0"
-    allow="autoplay"
+    allow="autoplay; encrypted-media"
+    allowfullscreen
   ></iframe>
 
   <div class="card">
@@ -257,15 +258,6 @@
   </div>
 
 <script>
-  // Music unlock after first interaction
-  function startMusic() {
-    const iframe = document.getElementById("music");
-    iframe.src =
-      "https://www.youtube.com/embed/450p7goxZqg?autoplay=1&loop=1&playlist=450p7goxZqg";
-    document.removeEventListener("click", startMusic);
-  }
-  document.addEventListener("click", startMusic);
-
   // Floating hearts + sparkles
   function floatingLove() {
     const el = document.createElement("div");
@@ -342,11 +334,18 @@
     }, 140);
   }
 
-  // YES Celebration
+  // YES Celebration + optional unmute (sound starts after click)
   yesBtn.onclick = () => {
     document.getElementById("celebration").style.display = "flex";
     roseRain();
     showLyrics();
+
+    // Optional: Unmute on YES click (now allowed after user interaction)
+    // Comment out the next 4 lines if you want to keep it always muted
+    const iframe = document.getElementById("music");
+    if (iframe.contentWindow && iframe.contentWindow.postMessage) {
+      iframe.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', "*");
+    }
   };
 </script>
 
